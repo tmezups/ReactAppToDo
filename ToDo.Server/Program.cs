@@ -1,3 +1,7 @@
+using Todo.Server.Options;
+using Todo.Server.Repositories;
+using Todo.Server.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,8 +13,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<DapperConnectionProvider>();
 builder.Services.AddSingleton<ToDoRepository>();
+builder.Services.AddSingleton<PasswordHasher>();
+builder.Services.AddSingleton<AccountRepository>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
 
+builder.Services.AddAuthentication().AddCookie();
 
 var app = builder.Build();
 
@@ -26,6 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
