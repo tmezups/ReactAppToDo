@@ -1,9 +1,6 @@
-create database Todo;
-go
+-- create database Todo;
+-- go
 
-
-use Todo;
-go;
 create table Todo(
      TodoId uniqueidentifier primary key,
      Title varchar(200) not null,
@@ -19,15 +16,5 @@ create table UserAccount(
  Password varchar(100) not null,
  CreatedOn datetime2 not null default getdate()
 )
-    Go
+Go
     
-    
-insert into Todo (Id, Title) values (newid(), 'Learn F#')
-insert into Todo (Id, Title) values (newid(), 'Learn C#')
-insert into Todo (Id, Title) values (newid(), 'Learn typescript')
-
-GO
-    
-    
-    insert into UserAccount (UserAccountId, UserName, Password) 
-    values (newid(), 'admin', 'admin')

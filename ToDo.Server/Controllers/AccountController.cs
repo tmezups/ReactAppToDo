@@ -25,17 +25,17 @@ namespace ToDo.Server.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("Login", Name = "Login")]
-        public async Task<ActionResult> Login(string userName, string password)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
-            var user = await _accountRepository.GetUser(userName);
+            var user = await _accountRepository.GetUser(model.UserName);
             if (user is NullUser)
             {
                 return NotFound();
             }
 
-            if (!_passwordHasher.VerifyPassword(user.Password, password))
+            if (!_passwordHasher.VerifyPassword(user.Password, model.Password))
             {
                 return BadRequest();
             }
