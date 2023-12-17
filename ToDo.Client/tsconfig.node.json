@@ -8,3 +8,15 @@
   },
   "include": ["vite.config.ts"]
 }
+
+
+"compilerOptions": {
+"target": "esnext",
+"module": "esnext",
+"moduleResolution": "node",
+"jsx": "react",
+"esModuleInterop": true,
+"skipLibCheck": true,
+"forceConsistentCasingInFileNames": true,
+"strict": true
+}
