@@ -5,6 +5,7 @@ create table Todo(
      TodoId uniqueidentifier primary key,
      Title varchar(200) not null,
      IsDone bit not null default 0,
+     UserAccountId uniqueidentifier not null,
      CreatedOn datetime2 not null default getdate(),
      UpdatedOn datetime2 not null default getdate()
 )

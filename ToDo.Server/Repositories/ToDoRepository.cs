@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using ToDo.Server.Controllers;
 using Todo.Server.Models;
 using Todo.Server.Services;
 
@@ -14,10 +15,93 @@ public class ToDoRepository
         _dataSource = dataSource;
     }
     
-    public async Task<IEnumerable<ToDoItem>> GetAllToDoItems()
+    public async Task<IEnumerable<ToDoItem>> GetAllToDoItems(Guid userAccountId)
     {
         using var connection = _dataSource.CreateConnection();
         connection.Open();
-        return await connection.QueryAsync<ToDoItem>("SELECT Title, Id, IsDone, CreatedOn, UpdatedOn FROM Todo");
+        return await connection.QueryAsync<ToDoItem>(
+            @"
+            SELECT Title, TodoId, IsDone, CreatedOn, UpdatedOn FROM Todo
+            WHERE UserAccountId = @UserAccountId
+            ",
+            new
+            {
+                UserAccountId = userAccountId
+            });
+    }   
+
+    public async Task AddToDoItem(ToDoItem toDoItem)
+    {
+       using var connection = _dataSource.CreateConnection();
+        await connection.ExecuteAsync(
+            @"
+            insert into ToDo (TodoId, Title, IsDone, UserAccountId)
+            values(@ToDoId, @Title, @IsDone, @UserAccountId)
+            ",
+            new
+            {
+                toDoItem.ToDoId,
+                toDoItem.Title,
+                toDoItem.IsDone,
+                toDoItem.UserAccountId
+            }); 
+    }
+
+    public async Task UpdateToDo(ToDoItem todoItem)
+    {
+        using var connection = _dataSource.CreateConnection();
+        await connection.ExecuteAsync(
+            @"
+        UPDATE ToDo 
+        SET Title = @Title, IsDone = @IsDone, UserAccountId = @UserAccountId, UpdatedOn = GETDATE()
+        WHERE ToDoId = @ToDoId
+        ",
+            new
+            {
+                todoItem.ToDoId,
+                todoItem.Title,
+                todoItem.IsDone,
+                todoItem.UserAccountId
+            }); 
+    }
+
+    public async Task<ToDoItem> GetToDoItem(Guid toDoId)
+    {
+        using var connection = _dataSource.CreateConnection();
+        var todo = await connection.QueryFirstOrDefaultAsync<ToDoItem>(
+            @"
+            select ToDoId, UserAccountId, Title, IsDone, CreatedOn, UpdatedOn from ToDo
+            where ToDoId = @ToDoId
+            ",
+            new
+            {
+                ToDoId = toDoId
+            });
+        
+        return todo ?? new NullableToDoItem();
+    }
+
+    public async Task DeleteToDo(ToDoItem todoItem)
+    {
+        using var connection = _dataSource.CreateConnection();
+        await connection.ExecuteAsync(
+            @"
+            delete from ToDo
+            where ToDoId = @ToDoId
+            ",
+            new
+            {
+                ToDoId = todoItem.ToDoId
+            });
     }
 }
+
+public class ToDoItem
+{
+    public Guid  ToDoId { get; set; }
+    public Guid UserAccountId { get; set; }
+    public string Title { get; set; } = "";
+    public bool IsDone { get; set; }
+}
+
+public class NullableToDoItem : ToDoItem {}

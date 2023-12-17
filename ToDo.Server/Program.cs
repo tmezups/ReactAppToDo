@@ -1,6 +1,7 @@
 using Todo.Server.Options;
 using Todo.Server.Repositories;
 using Todo.Server.Services;
+using Todo.Server.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseMiddleware<SwaggerBasicAuthMiddleware>();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

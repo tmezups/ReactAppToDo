@@ -3,7 +3,13 @@
 namespace ToDo.Server.Tests.TestInfrastructure;
 
 
-[CollectionDefinition(nameof(DatabaseContainerCollection))]
-public class DatabaseContainerCollection : ICollectionFixture<TodoApplicationFactory>
+[CollectionDefinition(nameof(TodoApplicationFactoryCollection))]
+public class TodoApplicationFactoryCollection : ICollectionFixture<TodoApplicationFactory>
+{
+}
+
+
+[CollectionDefinition(nameof(UserAccountApplicationFactoryCollection))]
+public class UserAccountApplicationFactoryCollection : ICollectionFixture<UserAccountApplicationFactory>
 {
 }

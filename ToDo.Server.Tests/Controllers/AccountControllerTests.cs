@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -9,16 +8,16 @@ using ToDo.Server.Tests.TestInfrastructure;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ToDo.Server.Tests;
+namespace ToDo.Server.Tests.Controllers;
 
-[Collection(nameof(DatabaseContainerCollection))]
+[Collection(nameof(UserAccountApplicationFactoryCollection))]
 public class AccountControllerTests 
 {
-    private readonly TodoApplicationFactory _fixture;
+    private readonly UserAccountApplicationFactory _fixture;
     private readonly ITestOutputHelper _output;
     private readonly Lazy<HttpClient> _httpClient;
 
-    public AccountControllerTests(TodoApplicationFactory fixture, ITestOutputHelper output)
+    public AccountControllerTests(UserAccountApplicationFactory fixture, ITestOutputHelper output)
     {
         _fixture = fixture;
         _output = output;
@@ -64,11 +63,11 @@ public class AccountControllerTests
         var testHelper = _fixture.Services.GetRequiredService<UserAccountTestHelper>();
         await testHelper.DeleteUserAccount(testAccount.Username);
         await testHelper.AddUserAccount(testAccount);
+        
         var response = await _httpClient.Value.PostAsJsonAsync("/Account/Login", new { userName = testAccount.Username, password = testAccount.Password });
         
         _output.WriteLine(await response.Content.ReadAsStringAsync());
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        
     }
     
 
