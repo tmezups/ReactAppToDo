@@ -52,7 +52,9 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
     public async Task<ActionResult<ToDoItem>> Update(ToDoItemViewModel toDoItemViewModel)
     {
         var todoItem = await toDoRepository.GetToDoItem(toDoItemViewModel.ToDoId);
-       
+        if (todoItem is NullableToDoItem)
+            return NotFound();
+        
         if (!IsCorrectUserForTodo(todoItem))
             return Forbid();
         

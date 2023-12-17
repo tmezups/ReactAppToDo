@@ -127,12 +127,30 @@ public class TodoControllerTests
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
     
+    
+    [Fact]
+    public async Task ShouldReturnNotFoundWhenTryingToUpdateToDoThatDoesNotExist()
+    {
+        var requestData = new TestToDoItem(Guid.NewGuid(),
+            MockAuthenticationHandler.MockUserAccountId, 
+            "update me", 
+            true, 
+            DateTime.MinValue, 
+            DateTime.MinValue );
+        
+        var response = await _httpClient.Value.PutAsJsonAsync("/ToDo/Update", requestData);
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        _output.WriteLine(responseContent);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+    
     [Fact]
     public async Task ShouldNotAllowAnotherUserToUpdateAnotherUsersToDo()
     {
         var requestData = new TestToDoItem(Guid.NewGuid(),
             Guid.NewGuid(), //just a random user
-            "uddate me", 
+            "update me", 
             true, 
             DateTime.MinValue, 
             DateTime.MinValue );
