@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import {Link} from "react-router-dom";
 import {makeStyles} from 'tss-react/mui'
-import {UserContext} from "../UserContext.tsx";
+import {UserContext} from "./UserContext.tsx";
 import { useNavigate  } from 'react-router-dom';
 import {accountApiService} from "../services";
 
