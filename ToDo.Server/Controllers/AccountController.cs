@@ -25,8 +25,7 @@ namespace ToDo.Server.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [HttpPost]
-        [Route("Login", Name = "Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
             var user = await _accountRepository.GetUser(model.UserName);
@@ -54,9 +53,8 @@ namespace ToDo.Server.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Route("Register", Name = "Register")]
-        public async Task<ActionResult> Register(RegisterUserViewModel model)
+        [HttpPost("Register")]
+        public async Task<ActionResult<Guid>> Register(RegisterUserViewModel model)
         {
             if (!model.Password.Equals(model.ConfirmPassword))
                 return BadRequest();
@@ -69,8 +67,9 @@ namespace ToDo.Server.Controllers
 
             var hashedPassword = _passwordHasher.Hash(model.Password);
             await _accountRepository.CreateUser(Guid.NewGuid(), model.UserName, hashedPassword);
-
-            return Ok();
+            user = await _accountRepository.GetUser(model.UserName);
+            
+            return Created("Register", user.Id);
         }
     }
 }

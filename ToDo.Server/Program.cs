@@ -21,9 +21,22 @@ builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("
 
 builder.Services.AddAuthentication().AddCookie();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        corsPolicyBuilder =>
+        {
+            corsPolicyBuilder.WithOrigins("https://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
+app.UseCors();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +48,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

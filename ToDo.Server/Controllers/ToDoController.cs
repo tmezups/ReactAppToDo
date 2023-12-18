@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Server.Extensions;
@@ -19,7 +20,7 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
         return (await toDoRepository.GetAllToDoItems(User.GetUserAccountId())).ToList();
     }
 
-    [HttpGet("Get/{todoId}")]
+    [HttpGet("{todoId}")]
     public async Task<ActionResult<ToDoItem>> Get(Guid toDoId)
     {
         var todoItem = await toDoRepository.GetToDoItem(toDoId);
@@ -44,7 +45,7 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
             IsDone = toDoItemViewModel.IsDone,
         };
         await toDoRepository.AddToDoItem(todoItem);
-        return CreatedAtAction(nameof(Get), new { id = todoItem.ToDoId }, todoItem);
+        return CreatedAtAction(nameof(Get), new { todoId = todoItem.ToDoId }, todoItem);
     }
 
 
@@ -86,6 +87,6 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
     }
 }
 
-public record CreateToDoItemViewModel(string Title, bool IsDone);
+public record CreateToDoItemViewModel([MinLength(1)]string Title, bool IsDone);
 
 public readonly record struct ToDoItemViewModel(Guid ToDoId, string Title, bool IsDone);

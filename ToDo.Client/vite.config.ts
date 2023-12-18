@@ -50,7 +50,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/ToDo': {
+            '^/todo': {
                 target,
                 secure: false
             }

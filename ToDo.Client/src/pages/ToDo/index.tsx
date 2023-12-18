@@ -6,15 +6,14 @@ import {
     Checkbox,
     List,
     ListItem,
-    Container,
-    makeStyles
+    Container
 } from "@mui/material";
-//import { makeStyles } from 'tss-react/mui';
-import "./styles.css";
+import { makeStyles } from 'tss-react/mui';
+//import "./styles.css";
 import {TodoItem} from "../../models";
 import {todoApiService} from "../../services";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
     input: {
         width: "70%",
         marginBottom: 30
@@ -45,7 +44,7 @@ const useStyles = makeStyles({
 export const ToDo : React.FC = () => {
     const [inputVal, setInputVal] = useState("");
     const [todos, setTodos] = useState<TodoItem[]>([]);
-    const classes = useStyles();
+    const { classes } = useStyles();
 
 
     useEffect(() => {
@@ -73,7 +72,6 @@ export const ToDo : React.FC = () => {
         const response = await todoApiService().createTodo(todo);
 
         setTodos([...todos, response.data!]);
-
         setInputVal("");
     };
 
@@ -85,14 +83,15 @@ export const ToDo : React.FC = () => {
         setTodos(newTodos);
     };
 
-    const handleDone = async (todo: TodoItem) => {
+    const handleDone = async (completedTodo: TodoItem) => {
         const updated = todos.map((todo) => {
-            if (todo.toDoId === todo.toDoId) {
+            if (completedTodo.toDoId === todo.toDoId) {
                 todo.isDone = !todo.isDone;
             }
             return todo;
         });
-        await todoApiService().updateTodo(todo);
+
+        await todoApiService().updateTodo(completedTodo);
         setTodos(updated);
     };
 
@@ -108,18 +107,18 @@ export const ToDo : React.FC = () => {
             />
             <Button
                 size="large"
-                //variant={isEdited ? "outlined" : "contained"}
                 color="primary"
                 onClick={handleCreate}
                 className={classes.addButton}
+                //disabled={inputVal === ""}
             >
-                "Create Task"
+                Create Task
             </Button>
             <List>
-                {todos.map((todo : TodoItem) => {
+                {todos.map((todo : TodoItem, key) => {
                     return (
                         <>
-                            <ListItem divider="bool" className={classes.list}>
+                            <ListItem key={key} divider className={classes.list}>
                                 <Checkbox
                                     onClick={() => handleDone(todo)}
                                     checked={todo.isDone}
@@ -127,7 +126,6 @@ export const ToDo : React.FC = () => {
                                 <Typography
                                     className={classes.text}
                                     style={{ color: todo.isDone ? "green" : "" }}
-                                    key={todo.toDoId}
                                 >
                                     {todo.title}
                                 </Typography>

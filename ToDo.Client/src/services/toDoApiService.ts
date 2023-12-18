@@ -9,9 +9,9 @@ export interface ITodoApi {
 }
 
 export const todoApiService = (token?: string): ITodoApi => {
-    const baseUrl = process.env.REACT_APP_API_URL;
+//    const baseUrl = process.env.REACT_APP_API_URL;
 
-    const url = (url: string) => `${baseUrl}/todo/${url}`;
+    const url = (url: string) => `https://localhost:7043/todo/${url}`;
 
     const headers = (withAuthorization: boolean) => {
         let headers = new Headers();
@@ -33,7 +33,7 @@ export const todoApiService = (token?: string): ITodoApi => {
             if (response.status !== 201) return apiPromise('error');
             const data = await response.json();
             return apiPromise('success', data);
-        },
+        },  
         async deleteTodo(id: string) {
             const response = await fetch(url(`delete/${id}`), {
                 method: 'DELETE',
@@ -45,7 +45,7 @@ export const todoApiService = (token?: string): ITodoApi => {
             return apiPromise('success');
         },
         async getTodos() {
-            const response = await fetch(url(`/getall`), {
+            const response = await fetch(url(`getall`), {
                 method: 'GET',
                 headers: headers(true),
                 credentials: 'include',
@@ -55,7 +55,7 @@ export const todoApiService = (token?: string): ITodoApi => {
             return apiPromise('success', data);
         },
         async updateTodo(todo: TodoItem) {
-            const response = await fetch(url(`update/${todo.toDoId}`), {
+            const response = await fetch(url(`update`), {
                 method: 'PUT',
                 headers: headers(true),
                 body: JSON.stringify(todo),

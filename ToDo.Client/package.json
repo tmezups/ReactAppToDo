@@ -19,6 +19,7 @@
     "tss-react": "^4.9.3"
   },
   "devDependencies": {
+    "@mui/codemod": "^5.15.0",
     "@types/node": "^20.10.4",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
