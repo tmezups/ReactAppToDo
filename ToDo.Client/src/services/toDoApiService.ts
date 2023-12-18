@@ -30,6 +30,7 @@ export const todoApiService = (history: NavigateFunction): ITodoApi => {
             });
             if (response.status === 401) { history("\login") }
             if (response.status !== 201) return apiPromise('error');
+
             const data = await response.json();
             return apiPromise('success', data);
         },  
