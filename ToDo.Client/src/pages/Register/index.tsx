@@ -123,7 +123,7 @@ export const Register: React.FC = () => {
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Login
+                        Register
                     </Button>
                 </Box>
             </Box>

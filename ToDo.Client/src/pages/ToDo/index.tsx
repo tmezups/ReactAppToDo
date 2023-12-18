@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate  } from 'react-router-dom';
-//import "./styles.css";
 import {TodoItem} from "../../models";
 import {todoApiService} from "../../services";
 
@@ -72,7 +71,7 @@ export const ToDo : React.FC = () => {
         };
 
         const response = await apiService.createTodo(todo);
-        console.log(response);
+        
         if(response.status == 'unauthorized' || response.status == 'forbid') { history('/login');}
 
         setTodos([...todos, response.data!]);

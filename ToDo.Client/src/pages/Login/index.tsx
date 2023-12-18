@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import {
     TextField,
     Button,
@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import { useNavigate  } from 'react-router-dom';
 import {accountApiService} from "../../services";
+import {UserContext} from "../../UserContext.tsx";
 export const Login: React.FC = () => {
     const history = useNavigate();
+    const value = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({
@@ -26,10 +28,9 @@ export const Login: React.FC = () => {
         if(!validateForm()) return;
         const { login } = accountApiService();
         const response = await login(username, password);
-        console.log('login',response);
-        if (response.status === 'success') { // && response.data
-            //const { token } = response.data;
-           // window.sessionStorage.setItem('token', token);
+        
+        if (response.status === 'success') {
+            value.setLoggedInUser({ username: response.data!.userName });
             history('/');
         }
         setErrors({username: '', password: '', apiResult:'Invalid username or password'});
@@ -108,7 +109,7 @@ export const Login: React.FC = () => {
                                <FormLabel error={Boolean(errors.apiResult)} hidden={!Boolean(errors.apiResult)}>Please check your details and try again</FormLabel>
                         </Grid>
                         <Grid item>
-                            <Link href="Register" variant="body2">
+                            <Link href="register" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

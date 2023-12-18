@@ -1,9 +1,8 @@
 import { User } from '../models';
 import { IApiResult, apiPromise } from './apiServicePromise.ts';
+import { NavigateFunction  } from 'react-router-dom';
 
-interface AuthenticateResult {
-    user: User;
-}
+
 
 export interface IAccountApi {
     register(
@@ -14,8 +13,8 @@ export interface IAccountApi {
     login(
         username: string,
         password: string
-    ): Promise<IApiResult<AuthenticateResult>>;
-    logout(): Promise<IApiResult<AuthenticateResult>>;
+    ): Promise<IApiResult<User>>;
+    logout(history: NavigateFunction) : void;
     user(): Promise<IApiResult<User>>;
 }
 
@@ -43,8 +42,8 @@ export const accountApiService = (): IAccountApi => {
             if (response.status === 404) return apiPromise('not found');
             if (response.status !== 200) return apiPromise('error');
 
-            //const data = await response.json();
-            return apiPromise('success');
+            const data = await response.json();
+            return apiPromise('success', data);
         },
       
         async register(
@@ -79,14 +78,13 @@ export const accountApiService = (): IAccountApi => {
             return apiPromise('success', data);
         },
 
-        async logout() {
-            const response = await fetch(url('logout'), {
+        async logout(history: NavigateFunction) {
+            await fetch(url('logout'), {
                 method: 'GET',
                 headers: headers,
                 credentials: 'include',
             });
-            if (response.status !== 200) return apiPromise('error');
-            return apiPromise('success');
+            history("/Login")
         }
     };
 };

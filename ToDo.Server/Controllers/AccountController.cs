@@ -28,7 +28,7 @@ namespace ToDo.Server.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult<UserViewModel>> Login(LoginViewModel model)
         {
             var user = await _accountRepository.GetUser(model.UserName);
             if (user is NullUser)
@@ -52,7 +52,7 @@ namespace ToDo.Server.Controllers
            
             await _httpContextAccessor.HttpContext!.SignInAsync(new ClaimsPrincipal(claimsIdentity));
 
-            return Ok();
+            return Ok(new UserViewModel(user.Username));
         }
 
         [HttpPost("Register")]
@@ -89,7 +89,6 @@ namespace ToDo.Server.Controllers
         }
         
         [HttpGet("Logout")]
-        [Authorize]
         public async Task<ActionResult> Logout()
         {
             await _httpContextAccessor.HttpContext!.SignOutAsync();
