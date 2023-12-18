@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using ToDo.Server.Controllers;
 using Todo.Server.Repositories;
 using ToDo.Server.Tests.TestInfrastructure;
 using Xunit;
@@ -29,15 +30,15 @@ public class TodoControllerTests
     
     [Fact]
     public async Task ShouldCreateToDoItem()
-    {
-       // var requestData = new CreateToDoItemViewModel("first to do", false);
-        var response = await _httpClient.Value.PostAsJsonAsync("/ToDo/Add", new { Title = "tu", IsDone = true });
+    { 
+        var requestData = new CreateToDoItemViewModel("first to do", false);
+        var response = await _httpClient.Value.PostAsJsonAsync("/ToDo/Create", requestData);
 
         var responseContent = await response.Content.ReadAsStringAsync();
         _output.WriteLine(responseContent);
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
         var testHelper = _fixture.Services.GetRequiredService<ToDoTestHelper>();
-        //(await testHelper.GetToDoItem(requestData.Title)).ShouldNotBeNull();
+        (await testHelper.GetToDoItem(requestData.Title)).ShouldNotBeNull();
     }
     
     
@@ -224,7 +225,7 @@ public class TodoControllerTests
         await testHelper.AddToDoItem(requestData);
         await testHelper.AddToDoItem(otherUserRequestData);
         
-        var response = await _httpClient.Value.GetAsync($"/ToDo/Get/{requestData.ToDoId}");
+        var response = await _httpClient.Value.GetAsync($"/ToDo/{requestData.ToDoId}");
 
         var responseContent = await response.Content.ReadAsStringAsync();
         _output.WriteLine(responseContent);
@@ -259,7 +260,7 @@ public class TodoControllerTests
         await testHelper.AddToDoItem(requestData);
         await testHelper.AddToDoItem(otherUserRequestData);
         
-        var response = await _httpClient.Value.GetAsync($"/ToDo/Get/{otherUserRequestData.ToDoId}");
+        var response = await _httpClient.Value.GetAsync($"/ToDo/{otherUserRequestData.ToDoId}");
 
         var responseContent = await response.Content.ReadAsStringAsync();
         _output.WriteLine(responseContent);

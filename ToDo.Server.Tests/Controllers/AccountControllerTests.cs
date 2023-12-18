@@ -34,7 +34,7 @@ public class AccountControllerTests
 
         var responseContent = await response.Content.ReadAsStringAsync();
         _output.WriteLine(responseContent);
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
         var testHelper = _fixture.Services.GetRequiredService<UserAccountTestHelper>();
         (await testHelper.GetUserAccounts()).Count(x => x.Username == "admin").ShouldBe(1);
     }
