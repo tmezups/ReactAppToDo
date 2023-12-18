@@ -9,6 +9,11 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ToDo.Client", "ToDo.Client\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.Server.Tests", "ToDo.Server.Tests\ToDo.Server.Tests.csproj", "{39E10115-5C3C-4367-8B50-877D862A3CCF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{5E075C9A-461A-456F-81DC-CBB5C12474CA}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

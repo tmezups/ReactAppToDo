@@ -16,18 +16,18 @@ RUN apt-get -y install nodejs
 FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Todo.Server/Todo.Server.csproj", "Todo.Server/"]
-COPY ["Todo.Client/Todo.Client.esproj", "Todo.Client/"]
-RUN dotnet restore "./Todo.Server/Todo.Server.csproj"
+COPY ["ToDo.Server/ToDo.Server.csproj", "ToDo.Server/"]
+COPY ["ToDo.Client/ToDo.Client.esproj", "ToDo.Client/"]
+RUN dotnet restore "./ToDo.Server/ToDo.Server.csproj"
 COPY . .
-WORKDIR "/src/Todo.Server"
-RUN dotnet build "./Todo.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ToDo.Server"
+RUN dotnet build "./ToDo.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Todo.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ToDo.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Todo.Server.dll"]
+ENTRYPOINT ["dotnet", "ToDo.Server.dll"]

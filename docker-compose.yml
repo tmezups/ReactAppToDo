@@ -1,0 +1,30 @@
+version: "3"
+services:
+    db:
+        build: ./ToDo.Server/Database/
+        environment:
+            SA_PASSWORD: "Password1234!"
+            MSSQL_SA_PASSWORD: "Password1234!"
+            SQLCMDPASSWORD: "Password1234!"
+            ACCEPT_EULA: "Y"
+    webapi:
+        build: ./ToDo.Server
+        environment:
+            ConnectionStrings__ToDo: "Server=db;Database=master;User=sa;Password=Password1234!"
+            #CorsOptions__PolicyName: "TodoApiPolicy"
+            #CorsOptions__AllowedOrigin: "http://localhost:3000"
+            #JwtToken__Audience: "TodoClient"
+            #JwtToken__Issuer: "TodoApi"
+            #JwtToken__Key: "VjFod1MxWXlSblJVYmxKWFlXcz0"
+            #JwtToken__Seconds: 180
+        ports:
+            - "5000:8080"
+        depends_on:
+            - db
+#    webapp:
+#        build:
+#            context: ./src/todo-list-spa
+#            args:
+#                - api_url=http://localhost:5000
+#        ports:
+#            - "3000:80"
