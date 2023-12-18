@@ -2,7 +2,6 @@ import { User } from '../models';
 import { IApiResult, apiPromise } from './apiServicePromise.ts';
 
 interface AuthenticateResult {
-    token: string;
     user: User;
 }
 
@@ -16,6 +15,8 @@ export interface IAccountApi {
         username: string,
         password: string
     ): Promise<IApiResult<AuthenticateResult>>;
+    logout(): Promise<IApiResult<AuthenticateResult>>;
+    user(): Promise<IApiResult<User>>;
 }
 
 
@@ -24,7 +25,8 @@ export const accountApiService = (): IAccountApi => {
 
     const url = (url: string) => `https://localhost:7043/account/${url}`;
     const headers = new Headers()
-        headers.append('Content-Type', 'application/json');
+    headers.append('Content-Type', 'application/json');
+    
     return {
         async login(username: string, password: string) {
             const bodyData = {
@@ -61,10 +63,30 @@ export const accountApiService = (): IAccountApi => {
                 body: JSON.stringify(bodyData),
                 credentials: 'include',
             });
-            console.log('register',response)
             if (response.status !== 201) return apiPromise('error');
             const data = await response.json();
             return apiPromise('success', data);
+        },
+        
+        async user() {
+            const response = await fetch(url('user'), {
+                method: 'GET',
+                headers: headers,
+                credentials: 'include',
+            });
+            if (response.status !== 200) return apiPromise('error');
+            const data = await response.json();
+            return apiPromise('success', data);
+        },
+
+        async logout() {
+            const response = await fetch(url('logout'), {
+                method: 'GET',
+                headers: headers,
+                credentials: 'include',
+            });
+            if (response.status !== 200) return apiPromise('error');
+            return apiPromise('success');
         }
     };
 };

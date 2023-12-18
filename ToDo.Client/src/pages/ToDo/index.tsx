@@ -9,6 +9,7 @@ import {
     Container
 } from "@mui/material";
 import { makeStyles } from 'tss-react/mui';
+import { useNavigate  } from 'react-router-dom';
 //import "./styles.css";
 import {TodoItem} from "../../models";
 import {todoApiService} from "../../services";
@@ -45,19 +46,20 @@ export const ToDo : React.FC = () => {
     const [inputVal, setInputVal] = useState("");
     const [todos, setTodos] = useState<TodoItem[]>([]);
     const { classes } = useStyles();
-
+    const history = useNavigate();
+    const apiService = todoApiService(history);
 
     useEffect(() => {
-        const {getTodos} = todoApiService();
+        const {getTodos} = apiService
         getTodos().then((result) => {
-            // if (result.status !== 'success') {
-            //     history.push('/login');
-            //     return;
-            // }
+            if (result.status !== 'success') {
+                history('/login');
+                return;
+            }
             setTodos(result.data!);
         });
     }, [history]);
-
+    
     const onChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setInputVal(e.target.value);
     };
@@ -69,14 +71,16 @@ export const ToDo : React.FC = () => {
             isDone: false,
         };
 
-        const response = await todoApiService().createTodo(todo);
+        const response = await apiService.createTodo(todo);
+        console.log(response);
+        if(response.status == 'unauthorized' || response.status == 'forbid') { history('/login');}
 
         setTodos([...todos, response.data!]);
         setInputVal("");
     };
 
     const onDelete = async (id: string) => {
-        const response = await todoApiService().deleteTodo(id);
+        const response = await apiService.deleteTodo(id);
         
         if(response.status !== 'success') return;
         const newTodos = todos.filter((todo) => todo.toDoId !== id);
@@ -91,7 +95,7 @@ export const ToDo : React.FC = () => {
             return todo;
         });
 
-        await todoApiService().updateTodo(completedTodo);
+        await apiService.updateTodo(completedTodo);
         setTodos(updated);
     };
 
@@ -110,7 +114,6 @@ export const ToDo : React.FC = () => {
                 color="primary"
                 onClick={handleCreate}
                 className={classes.addButton}
-                //disabled={inputVal === ""}
             >
                 Create Task
             </Button>

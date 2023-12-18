@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Todo.Server.Extensions;
 using Todo.Server.Models;
 using Todo.Server.Repositories;
 using Todo.Server.Services;
@@ -71,5 +73,30 @@ namespace ToDo.Server.Controllers
             
             return Created("Register", user.Id);
         }
+        
+        
+        [HttpGet("User")]
+        [Authorize]
+        public ActionResult<string> GetUser()
+        {
+            var userName = User.GetUserName();
+            if (userName is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new UserViewModel(userName));
+        }
+        
+        [HttpGet("Logout")]
+        [Authorize]
+        public async Task<ActionResult> Logout()
+        {
+            await _httpContextAccessor.HttpContext!.SignOutAsync();
+
+            return NoContent();
+        }
     }
+    
+    public record UserViewModel(string UserName);
 }

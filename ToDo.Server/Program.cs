@@ -19,7 +19,16 @@ builder.Services.AddSingleton<AccountRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
 
-builder.Services.AddAuthentication().AddCookie();
+builder.Services.AddAuthentication().AddCookie(options =>
+{
+    options.LoginPath = new PathString("/Login");
+    options.LogoutPath = new PathString("/LogOut");
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
+});
 
 builder.Services.AddCors(options =>
 {
