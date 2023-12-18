@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Server.Extensions;
+using Todo.Server.Models;
 using Todo.Server.Repositories;
 
 namespace ToDo.Server.Controllers;
@@ -78,6 +79,12 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
         await toDoRepository.DeleteToDo(todoItem);
         
         return NoContent();
+    }
+    
+    [HttpGet("Search")]
+    public async Task<ActionResult<IEnumerable<ToDoItem>>> Search([FromQuery]SearchViewModel searchViewModel)
+    {
+        return Ok(await toDoRepository.SearchToDo(searchViewModel.StartDate, searchViewModel.EndDate));
     }
     
     

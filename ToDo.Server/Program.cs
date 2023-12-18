@@ -1,4 +1,4 @@
-using Todo.Server.Options;
+using Todo.Server.Configuration;
 using Todo.Server.Repositories;
 using Todo.Server.Services;
 using Todo.Server.Swagger;

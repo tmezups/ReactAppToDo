@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using ToDo.Server.Controllers;
-using Todo.Server.Models;
 using Todo.Server.Services;
 
 namespace Todo.Server.Repositories;
@@ -94,6 +92,22 @@ public class ToDoRepository
                 ToDoId = todoItem.ToDoId
             });
     }
+    
+    public async Task<IEnumerable<ToDoItem>> SearchToDo(DateTime startDate, DateTime endDate)
+    {
+        using var connection = _dataSource.CreateConnection();
+        return await connection.QueryAsync<ToDoItem>(
+            @"
+               select ToDoId, UserAccountId, Title, IsDone, CreatedOn, UpdatedOn from ToDo
+               where CreatedOn >= @startDate and CreatedOn <= @endDate
+            ",
+            new
+            {
+                startDate,
+                endDate
+            });
+    }
+    
 }
 
 public class ToDoItem

@@ -1,6 +1,5 @@
 using Dapper;
 using Todo.Server.Models;
-using Todo.Server.Options;
 using Todo.Server.Services;
 
 namespace Todo.Server.Repositories;

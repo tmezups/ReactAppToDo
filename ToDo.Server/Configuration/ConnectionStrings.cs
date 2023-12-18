@@ -1,4 +1,4 @@
-namespace Todo.Server.Options;
+namespace Todo.Server.Configuration;
 
 public record ConnectionStrings
 {
