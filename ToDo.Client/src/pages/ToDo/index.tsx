@@ -115,6 +115,7 @@ export const ToDo : React.FC = () => {
                 onClick={handleCreate}
                 className={classes.addButton}
                 data-testid='todo-button'
+                disabled={!inputVal}
             >
                 Create Task
             </Button>

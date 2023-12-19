@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest';
 import ToDo from '../index';
 import { render, screen, userEvent } from '../../../../utils/test-utils';
 import { BrowserRouter } from 'react-router-dom';
+import {fireEvent} from '@testing-library/react'
 
 
 
@@ -19,10 +20,10 @@ describe('ToDo logic tests', () => {
         render(<BrowserRouter><ToDo /></BrowserRouter>)
 
         const todoTitle = screen.getByTestId(/todo-input/i);
-        todoTitle.value = 'test';
+        fireEvent.change(todoTitle, {target: {value: 'test'}})
         await userEvent.click(screen.getByTestId(/todo-button/i))
 
-            expect(await screen.findByText('first post title')).toBeInTheDocument()
+        expect(await screen.findByText('first post title')).toBeInTheDocument()
 
     })
 });

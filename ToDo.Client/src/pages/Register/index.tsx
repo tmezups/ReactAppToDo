@@ -75,7 +75,7 @@ export const Register: React.FC = () => {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Register
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                     <TextField margin="normal"
