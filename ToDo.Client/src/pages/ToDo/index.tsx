@@ -107,12 +107,14 @@ export const ToDo : React.FC = () => {
                 label="type your task to do"
                 value={inputVal}
                 className={classes.input}
+                inputProps={{'data-testid': 'todo-input' }}
             />
             <Button
                 size="large"
                 color="primary"
                 onClick={handleCreate}
                 className={classes.addButton}
+                data-testid='todo-button'
             >
                 Create Task
             </Button>
