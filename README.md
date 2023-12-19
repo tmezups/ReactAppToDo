@@ -3,11 +3,11 @@
 Todo web app built with [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-8.0),
 [ReactJS](https://reactjs.org/) and [SQL Server](https://www.microsoft.com/en-us/sql-server)
 
-<p align="center">
- <a href="#technologies">Technologies</a> •
- <a href="#getting-started">Getting started</a> •
- <a href="#run-with-docker">Run with docker</a> •
-</p>
+## Sections
+- [Technologies](#technologies)
+- [Getting started](#getting-started)
+- [Run with docker](#run-with-docker)
+
 
 ## Technologies
 
