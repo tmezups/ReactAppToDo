@@ -12,7 +12,7 @@ export interface ITodoApi {
 export const todoApiService = (history: NavigateFunction): ITodoApi => {
 //    const baseUrl = process.env.REACT_APP_API_URL;
 
-    const url = (url: string) => `http://localhost:5000/todo/${url}`;
+    const url = (url: string) => `http://localhost:8080/todo/${url}`;
 
     const headers = () => {
         let headers = new Headers();

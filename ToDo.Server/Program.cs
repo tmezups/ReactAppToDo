@@ -21,6 +21,7 @@ builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("
 
 builder.Services.AddAuthentication().AddCookie(options =>
 {
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None; //this is just so that we dont need certs, we should never do this in a production site
     options.LoginPath = new PathString("/Login");
     options.LogoutPath = new PathString("/LogOut");
     options.Events.OnRedirectToLogin = context =>
@@ -37,7 +38,7 @@ builder.Services.AddCors(options =>
         {
             corsPolicyBuilder.WithOrigins("https://localhost:5173", 
                     "https://localhost:5000",
-                    "http://localhost:5000")
+                    "http://localhost:8080")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();

@@ -12,12 +12,11 @@ services:
             context: .
             dockerfile: ./ToDo.Server/Dockerfile
         environment:
-            ASPNETCORE_URLS: http://+:7043
             ConnectionStrings__ToDo: "Server=db;Database=master;Encrypt=false;User=sa;Password=Password1234!;"
             #CorsOptions__PolicyName: "TodoApiPolicy"
             #CorsOptions__AllowedOrigin: "http://localhost:3000"
         ports:
-            - "5000:7043"
+            - "8080:8080"
         depends_on:
             - db
 #    webapp:

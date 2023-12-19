@@ -22,7 +22,7 @@ export interface IAccountApi {
 export const accountApiService = (): IAccountApi => {
     //const baseUrl = process.env.REACT_APP_API_URL;
 
-    const url = (url: string) => `http://localhost:5000/account/${url}`;
+    const url = (url: string) => `http://localhost:8080/account/${url}`;
     const headers = new Headers()
     headers.append('Content-Type', 'application/json');
     
