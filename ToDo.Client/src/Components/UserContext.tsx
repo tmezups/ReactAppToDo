@@ -31,12 +31,7 @@ export const UserContextProvider: React.FC<Props> = ({children}) => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const checkUser = async () => {
-            //let loggedInUser: ICurrentUser | null = null;
-            // if (localStorage.getItem('user')) {
-            //     loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
-            // }
             const {user} = accountApiService();
-           // if (loggedInUser === null) {
                 const userData = await user();
                 if (userData.status === 'success' && userData.data !== null) {
                     sessionStorage.setItem('user', userData.data!.userName);
@@ -44,7 +39,6 @@ export const UserContextProvider: React.FC<Props> = ({children}) => {
                 }
 
                 setLoading(false);
-           // }
         };
         checkUser();
     }, []);

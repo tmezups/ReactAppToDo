@@ -13,16 +13,7 @@ services:
             dockerfile: ./ToDo.Server/Dockerfile
         environment:
             ConnectionStrings__ToDo: "Server=db;Database=master;Encrypt=false;User=sa;Password=Password1234!;"
-            #CorsOptions__PolicyName: "TodoApiPolicy"
-            #CorsOptions__AllowedOrigin: "http://localhost:3000"
         ports:
             - "8080:8080"
         depends_on:
             - db
-#    webapp:
-#        build:
-#            context: ./src/todo-list-spa
-#            args:
-#                - api_url=http://localhost:5000
-#        ports:
-#            - "3000:80"

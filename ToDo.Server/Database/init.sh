@@ -11,4 +11,3 @@ echo "Initializing database"
 /opt/mssql-tools/bin/sqlcmd -U sa -P Password1234! -l 30 -i /scripts/ToDo.sql
 
 wait $pid
-do
