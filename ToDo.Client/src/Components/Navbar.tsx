@@ -14,8 +14,8 @@ import {accountApiService} from "../services";
 
 const useStyles = makeStyles()({
     navlinks: {
-        marginLeft: 10,
-        display: "flex",
+        marginLeft: "auto",
+        display: "flex"
     },
     logo: {
         flexGrow: "1",
