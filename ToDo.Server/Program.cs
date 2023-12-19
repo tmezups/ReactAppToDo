@@ -51,13 +51,11 @@ app.UseDefaultFiles();
 app.UseCors();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseMiddleware<SwaggerBasicAuthMiddleware>();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// making swagger available in all envs, it requires authentication
+app.UseMiddleware<SwaggerBasicAuthMiddleware>();
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 

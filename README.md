@@ -61,3 +61,33 @@ To stop the application run
 docker-compose down
 ```
 
+### To see the swagger documentation
+
+Swagger wil be available here: http://localhost:8080/swagger/index.html
+
+It will ask for authtentication, use the following credentials:
+
+```
+user: admin
+pwd: admim
+```
+
+Here you will be able to see all the API endpoints and test them.
+They are all used by the frontend app. Apart from the `todo/search` endpoint, that is only exposed to swagger.
+This endpoint can be used to return all the todos, or to search for a specific date period, where a date looks like this: `2023-04-01`
+
+### Running tests
+
+To run the backend tests, run the following command:
+
+```
+cd .\ToDo.Server.Tests\
+dotnet test
+```
+
+To run the frontend tests, run the following command:
+
+```
+cd .\ToDo.Client\
+npm run test
+```
