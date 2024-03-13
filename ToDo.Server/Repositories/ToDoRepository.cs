@@ -96,6 +96,12 @@ public class ToDoRepository
     
     public async Task<IEnumerable<ToDoItem>> SearchToDo(DateTime startDate, DateTime endDate)
     {
+        if(startDate == DateTime.MinValue)
+            startDate = DateTime.Now.AddDays(-7);
+        
+        if(endDate == DateTime.MinValue)
+            endDate = DateTime.Now.AddDays(1);
+        
         using var connection = _dataSource.CreateConnection();
         return await connection.QueryAsync<ToDoItem>(
             @"

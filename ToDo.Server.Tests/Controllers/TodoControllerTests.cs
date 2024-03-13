@@ -277,6 +277,15 @@ public class TodoControllerTests
         
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
+    
+    
+    [Fact]
+    public async Task ShouldReturnValidResponseWhenSearchingAllToDo()
+    {
+        var response = await _httpClient.Value.GetAsync($"/ToDo/Search");
+        
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
 }
 

@@ -9,7 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS with-node
 RUN apt-get update
 RUN apt-get install curl
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
+RUN curl -L https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get -y install nodejs
 
 
@@ -19,7 +19,10 @@ WORKDIR /src
 COPY ["ToDo.Server/ToDo.Server.csproj", "ToDo.Server/"]
 COPY ["ToDo.Client/ToDo.Client.esproj", "ToDo.Client/"]
 RUN dotnet restore "./ToDo.Server/ToDo.Server.csproj"
-COPY . .
+COPY ["ToDo.Server/", "ToDo.Server/"]
+COPY ["ToDo.Client/", "ToDo.Client/"]
+#CMD ["bash"]
+#COPY . .
 WORKDIR "/src/ToDo.Server"
 RUN dotnet build "./ToDo.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
