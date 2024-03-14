@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<DapperConnectionProvider>();
+builder.Services.AddSingleton<IDatabaseConnectionProvider, DapperConnectionProvider>();
 builder.Services.AddSingleton<ToDoRepository>();
 builder.Services.AddSingleton<PasswordHasher>();
 builder.Services.AddSingleton<AccountRepository>();

@@ -5,7 +5,7 @@ using Todo.Server.Configuration;
 
 namespace Todo.Server.Services;
 
-public class DapperConnectionProvider
+public class DapperConnectionProvider : IDatabaseConnectionProvider
 {
 
     private readonly ConnectionStrings _connectionString;

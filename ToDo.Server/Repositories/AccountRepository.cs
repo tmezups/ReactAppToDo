@@ -6,9 +6,9 @@ namespace Todo.Server.Repositories;
 
 public class AccountRepository
 {
-    private readonly DapperConnectionProvider _dataSource;
+    private readonly IDatabaseConnectionProvider _dataSource;
 
-    public AccountRepository(DapperConnectionProvider dataSource)
+    public AccountRepository(IDatabaseConnectionProvider dataSource)
     {
         _dataSource = dataSource;
     }

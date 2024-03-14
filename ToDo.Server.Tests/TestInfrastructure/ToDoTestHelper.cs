@@ -5,12 +5,12 @@ namespace ToDo.Server.Tests.TestInfrastructure;
 
 public class ToDoTestHelper
 {
-    private readonly DapperConnectionProvider _connection;
+    private readonly IDatabaseConnectionProvider _connection;
     private readonly PasswordHasher _passwordHasher;
 
-    public ToDoTestHelper(DapperConnectionProvider dapperConnectionProvider, PasswordHasher passwordHasher)
+    public ToDoTestHelper(IDatabaseConnectionProvider connectionProvider, PasswordHasher passwordHasher)
     {
-        _connection = dapperConnectionProvider;
+        _connection = connectionProvider;
         _passwordHasher = passwordHasher;
     }
 
