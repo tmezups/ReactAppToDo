@@ -1,9 +1,12 @@
 ﻿namespace Todo.Server.Models;
 
-public class ToDoItem
+public record ToDoItem(Guid ToDoId, Guid UserAccountId)
 {
-    public Guid  ToDoId { get; set; }
-    public Guid UserAccountId { get; set; }
-    public string Title { get; set; } = "";
+    public ToDoItem() : this(Guid.Empty, Guid.Empty)
+    {
+    }
     public bool IsDone { get; set; }
+    public string Title { get; set; } = "";
+
 }
+

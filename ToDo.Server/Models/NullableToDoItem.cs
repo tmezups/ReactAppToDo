@@ -1,3 +1,3 @@
 namespace Todo.Server.Models;
 
-public class NullableToDoItem : ToDoItem {}
+public record NullableToDoItem() : ToDoItem(Guid.Empty, Guid.Empty) {}

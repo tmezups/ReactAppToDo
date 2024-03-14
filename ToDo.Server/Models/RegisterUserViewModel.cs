@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Todo.Server.Models;
 
-public record RegisterUserViewModel(
+public readonly record struct RegisterUserViewModel(
     [Required]
     [MinLength(1)]
     string UserName,

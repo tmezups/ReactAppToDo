@@ -55,38 +55,6 @@ public class ToDoTestHelper
                 ToDoId = todoId
             });
     }
-    
-    
-    public async Task AddUserAccount(TestUserAccount userAccount)
-    {
-        using var connection = _connection.CreateConnection();
-        await connection.ExecuteAsync(
-            """
-            insert into UserAccount(UserAccountID, Username, Password)
-            values(@UserAccountID, @Username, @Password)
-            """,
-            new
-            {
-                UserAccountID = userAccount.UserAccountId,
-                userAccount.Username,
-                Password = _passwordHasher.Hash(userAccount.Password),
-                userAccount.CreatedOn
-            });
-    }
-    
-    public async Task DeleteUserAccount(string Username)
-    {
-        using var connection = _connection.CreateConnection();
-        await connection.ExecuteAsync(
-            """
-            delete from UserAccount
-            where Username = @Username
-            """,
-            new
-            {
-                Username
-            });
-    }
 
     public async Task AddToDoItem(TestToDoItem requestData)
     { 

@@ -38,12 +38,10 @@ public class ToDoController(ILogger<ToDoController> logger, ToDoRepository toDoR
     [HttpPost("Create")]
     public async Task<ActionResult<ToDoItem>> Create(CreateToDoItemViewModel toDoItemViewModel)
     {
-        var todoItem = new ToDoItem
+        var todoItem = new ToDoItem(Guid.NewGuid(), User.GetUserAccountId())
         {
-            ToDoId = Guid.NewGuid(),
-            UserAccountId = User.GetUserAccountId(),
-            Title = toDoItemViewModel.Title,
             IsDone = toDoItemViewModel.IsDone,
+            Title = toDoItemViewModel.Title
         };
         await toDoRepository.AddToDoItem(todoItem);
         return CreatedAtAction(nameof(Get), new { todoId = todoItem.ToDoId }, todoItem);

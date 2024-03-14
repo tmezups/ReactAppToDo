@@ -200,6 +200,7 @@ public class TodoControllerTests
         todo.Title.ShouldBe(requestData.Title);
         todo.ToDoId.ShouldBe(requestData.ToDoId);
         todo.IsDone.ShouldBe(requestData.IsDone);
+        todo.UserAccountId.ShouldBe(MockAuthenticationHandler.MockUserAccountId);
 
     }
     

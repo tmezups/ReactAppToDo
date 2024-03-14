@@ -20,7 +20,7 @@ public class ToDoRepository
         connection.Open();
         return await connection.QueryAsync<ToDoItem>(
             @"
-            SELECT Title, TodoId, IsDone, CreatedOn, UpdatedOn FROM Todo
+            SELECT Title, TodoId,  UserAccountId, IsDone, CreatedOn, UpdatedOn FROM Todo
             WHERE UserAccountId = @UserAccountId
             ",
             new
