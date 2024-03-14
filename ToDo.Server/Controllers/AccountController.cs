@@ -12,9 +12,10 @@ namespace ToDo.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController
+    public partial class AccountController
         : ControllerBase
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AccountRepository _accountRepository;
         private readonly PasswordHasher _passwordHasher;
@@ -22,6 +23,7 @@ namespace ToDo.Server.Controllers
         public AccountController(ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor,
             AccountRepository accountRepository, PasswordHasher passwordHasher)
         {
+            _logger = logger;
             _httpContextAccessor = httpContextAccessor;
             _accountRepository = accountRepository;
             _passwordHasher = passwordHasher;
@@ -33,11 +35,13 @@ namespace ToDo.Server.Controllers
             var user = await _accountRepository.GetUser(model.UserName);
             if (user is NullUser)
             {
+                LogUserNotFound(model.UserName);
                 return NotFound();
             }
 
             if (!_passwordHasher.VerifyPassword(user.Password, model.Password))
             {
+                LogIncorrectPassword(model.UserName);
                 return BadRequest();
             }
 
@@ -64,6 +68,7 @@ namespace ToDo.Server.Controllers
             var user = await _accountRepository.GetUser(model.UserName);
             if (user is not NullUser)
             {
+                LogUserAlreadyExists(model.UserName);
                 return BadRequest();
             }
 
@@ -74,7 +79,7 @@ namespace ToDo.Server.Controllers
             return Created("Register", user.Id);
         }
         
-        
+
         [HttpGet("User")]
         [Authorize]
         public ActionResult<string> GetUser()
@@ -95,6 +100,15 @@ namespace ToDo.Server.Controllers
 
             return NoContent();
         }
+        
+        [LoggerMessage(0, LogLevel.Information, "Incorrect password supplied for user: {UserName}")]
+        partial void LogIncorrectPassword(string userName);
+        
+        [LoggerMessage(0, LogLevel.Information, "User not found: {UserName}")]
+        partial void LogUserNotFound(string userName);
+        
+        [LoggerMessage(0, LogLevel.Information, "User trying to register already exists: {UserName}")]
+        partial void LogUserAlreadyExists(string userName);
     }
     
     public record UserViewModel(string UserName);
