@@ -24,7 +24,9 @@ interface Props {
 }
 
 export const UserContext = createContext<UserContextType>({
-    user: null, loading: true, logout: () => { }, setLoggedInUser: () => { }
+    user: null, loading: true, logout: () => {
+    }, setLoggedInUser: () => {
+    }
 });
 export const UserContextProvider: React.FC<Props> = ({children}) => {
     const [user, setUser] = useState<ICurrentUser | null>(null);
@@ -32,13 +34,13 @@ export const UserContextProvider: React.FC<Props> = ({children}) => {
     useEffect(() => {
         const checkUser = async () => {
             const {user} = accountApiService();
-                const userData = await user();
-                if (userData.status === 'success' && userData.data !== null) {
-                    sessionStorage.setItem('user', userData.data!.userName);
-                    setUser({username: userData.data!.userName});
-                }
+            const userData = await user();
+            if (userData.status === 'success' && userData.data !== null) {
+                sessionStorage.setItem('user', userData.data!.userName);
+                setUser({username: userData.data!.userName});
+            }
 
-                setLoading(false);
+            setLoading(false);
         };
         checkUser();
     }, []);
