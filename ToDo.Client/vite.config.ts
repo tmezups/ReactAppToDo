@@ -8,6 +8,8 @@ import path from 'path';
 import child_process from 'child_process';
 import { env } from 'process';
 
+
+console.log('env', env);
 const baseFolder =
     env.APPDATA !== undefined && env.APPDATA !== ''
         ? `${env.APPDATA}/ASP.NET/https`
@@ -15,6 +17,7 @@ const baseFolder =
 
 const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
 const certificateName = certificateArg ? certificateArg.groups.value : "ToDo.client";
+console.log('certificateName', certificateName);
 
 if (!certificateName) {
     console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
@@ -23,7 +26,8 @@ if (!certificateName) {
 
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
-
+/*
+console.log(certFilePath, keyFilePath);
 if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     if (0 !== child_process.spawnSync('dotnet', [
         'dev-certs',
@@ -37,7 +41,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
         throw new Error("Could not create certificate.");
     }
 }
-
+*/
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
     env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'https://localhost:7043';
 
@@ -52,6 +56,10 @@ export default defineConfig({
     server: {
         proxy: {
             '^/todo': {
+                target,
+                secure: false
+            },
+            '^/account': {
                 target,
                 secure: false
             }
@@ -70,4 +78,6 @@ export default defineConfig({
         // since parsing CSS is slow
         css: true,
     },
+} as import('vite').UserConfig & { test?: import('vitest/config').UserConfig['test'] 
+    
 })

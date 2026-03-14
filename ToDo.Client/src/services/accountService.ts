@@ -20,7 +20,7 @@ export interface IAccountApi {
 
 
 export const accountApiService = (): IAccountApi => {
-    const url = (url: string) => `http://localhost:8080/account/${url}`;
+    const url = (path: string) => `/account/${path}`;
     const headers = new Headers()
     headers.append('Content-Type', 'application/json');
     

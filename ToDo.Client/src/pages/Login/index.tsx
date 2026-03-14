@@ -105,10 +105,10 @@ export const Login: React.FC = () => {
                         Login
                     </Button>
                     <Grid container>
-                        <Grid item>
+                        <Grid>
                                <FormLabel error={Boolean(errors.apiResult)} hidden={!Boolean(errors.apiResult)}>Please check your details and try again</FormLabel>
                         </Grid>
-                        <Grid item>
+                        <Grid>
                             <Link href="register" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
