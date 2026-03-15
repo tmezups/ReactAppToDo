@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -61,8 +61,8 @@ public class TodoApplicationFactory : WebApplicationFactory<Program>, IAsyncLife
 
     public new async Task DisposeAsync()
     {
-        await base.DisposeAsync();
-        await _databaseContainer.DatabaseContainer.StopAsync();
+        //await base.DisposeAsync();
+        //await _databaseContainer.DatabaseContainer.StopAsync();
     }
 }
 
@@ -71,8 +71,8 @@ public class MockAuthenticationHandler : AuthenticationHandler<AuthenticationSch
     public static readonly Guid MockUserAccountId = Guid.Parse("8BFE87B9-4F3E-4485-B1B7-DA1AA28486E7");
 
     public MockAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-        : base(options, logger, encoder, clock)
+        ILoggerFactory logger, UrlEncoder encoder)
+        : base(options, logger, encoder)
     {
     }
 

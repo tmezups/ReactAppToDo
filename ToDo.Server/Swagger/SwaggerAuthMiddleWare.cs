@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
@@ -21,11 +21,17 @@ public class SwaggerBasicAuthMiddleware
     {
         if (context.Request.Path.StartsWithSegments("/swagger"))
         {
-            string authHeader = context.Request.Headers["Authorization"];
-            if (authHeader != null && authHeader.StartsWith("Basic "))
+            string? authHeader = context.Request.Headers["Authorization"];
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Basic "))
             {
                 var encodedUsernamePassword =
                     authHeader.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries)[1]?.Trim();
+                if (string.IsNullOrEmpty(encodedUsernamePassword))
+                {
+                    context.Response.Headers["WWW-Authenticate"] = "Basic";
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return;
+                }
 
                 var decodedUsernamePassword =
                     Encoding.UTF8.GetString(Convert.FromBase64String(encodedUsernamePassword));
