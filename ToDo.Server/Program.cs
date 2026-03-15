@@ -33,23 +33,26 @@ builder.Services.AddAuthentication().AddCookie(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        corsPolicyBuilder =>
-        {
-            corsPolicyBuilder.WithOrigins("https://localhost:5173", 
-                    "https://localhost:5000",
-                    "http://localhost:8080",
-                    "https://localhost:7043")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://localhost:5173",
+                "https://localhost:5000",
+                "http://localhost:8080",
+                "https://localhost:7043",
+                "http://localhost:5175")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
 });
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
-app.UseCors();
+//app.UseCors();
 app.UseStaticFiles();
 
 // making swagger available in all envs, it requires authentication
@@ -58,7 +61,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 
 
