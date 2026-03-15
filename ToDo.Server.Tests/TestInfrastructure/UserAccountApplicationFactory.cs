@@ -57,7 +57,7 @@ public class UserAccountApplicationFactory : WebApplicationFactory<Program>, IAs
 
     public new async Task DisposeAsync()
     {
-        //await base.DisposeAsync();
-       // await _databaseContainer.DatabaseContainer.StopAsync();
+        await base.DisposeAsync();
+        await _databaseContainer.DatabaseContainer.StopAsync();
     }
 }
